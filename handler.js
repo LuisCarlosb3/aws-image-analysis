@@ -44,13 +44,13 @@ class Handler {
   }
   async main(event){
     try{
-      const { imageUrl } = event.queryStringParameters
-      if(!imageUrl){
+      if(!event.queryStringParameters || !event.queryStringParameters.imageUrl){
         return {
           statusCode: 403,
           body: 'Invalid imageUrl'
         }
       }
+      const { imageUrl } = event.queryStringParameters
       const imgBuffer = await this.getImageBuffer(imageUrl)
       const { names, workingItens } = await this.detectImageLabels(imgBuffer)
       const texts = await this.translateText(names)
